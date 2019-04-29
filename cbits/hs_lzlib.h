@@ -38,4 +38,28 @@ hs_lzlib_version_check(void)
   return 0;
 }
 
+static void
+hs_lzlib_compress_close(struct LZ_Encoder *const encoder)
+{
+  LZ_compress_close(encoder);
+}
+
+static void
+hs_lzlib_decompress_close(struct LZ_Decoder *const decoder)
+{
+  LZ_decompress_close(decoder);
+}
+
+static inline void*
+hs_lzlib_decompress_close_addr(void)
+{
+  return &hs_lzlib_decompress_close;
+}
+
+static inline void*
+hs_lzlib_compress_close_addr(void)
+{
+  return &hs_lzlib_compress_close;
+}
+
 #endif

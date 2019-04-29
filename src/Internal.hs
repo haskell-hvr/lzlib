@@ -25,7 +25,6 @@ module Internal
     , Typeable
     , ByteString
 
-    , c'lzlib_version_check
     , LzEncoder(..)
     , LzDecoder(..)
 
@@ -53,16 +52,12 @@ intCast :: (Integral a, Num b) => a -> b
 intCast = fromIntegral
 #endif
 
--- clamped conversion from 'Int' to 'CInt'
--- assumed invariant:   maxBound :: CInt <= maxBound :: Int@
+-- | Clamped conversion from 'Int' to non-negative 'CInt'
 int2cint :: Int -> CInt
 int2cint = fromIntegral . min maxCInt . max 0
   where
     maxCInt :: Int
     maxCInt = intCast (maxBound :: CInt)
-
--- a non-zero value denotes failure
-foreign import capi unsafe "hs_lzlib.h hs_lzlib_version_check" c'lzlib_version_check :: CInt
 
 -- | @lzlib@ compressor handle.
 newtype LzEncoder = LzEncoder (ForeignPtr LzEncoder)

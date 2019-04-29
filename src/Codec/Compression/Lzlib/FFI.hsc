@@ -2,6 +2,8 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE Unsafe             #-}
 
+{-# OPTIONS_GHC -fno-warn-dodgy-foreign-imports #-}
+
 -- Copyright (C) 2019  Herbert Valerio Riedel
 --
 -- This program is free software: you can redistribute it and/or modify
@@ -94,6 +96,9 @@ module Codec.Compression.Lzlib.FFI
 
     , C'LZ_Errno
     , LzErrno(..), toLzErrno
+
+      -- * Internal
+    , c'lzlib_version_check
     ) where
 
 import           Foreign
@@ -101,6 +106,9 @@ import           Foreign.C
 import           Internal
 
 #include "hs_lzlib.h"
+
+-- a non-zero value denotes failure
+foreign import capi unsafe "hs_lzlib.h hs_lzlib_version_check" c'lzlib_version_check :: CInt
 
 ----------------------------------------------------------------------------
 -- Parameter limits
@@ -118,7 +126,7 @@ foreign import capi unsafe "hs_lzlib.h LZ_max_match_len_limit" c'LZ_max_match_le
 foreign import capi "hs_lzlib.h LZ_compress_open"    c'LZ_compress_open  :: CInt -> CInt -> CULLong -> IO (Ptr LzEncoder)
 foreign import capi "hs_lzlib.h LZ_compress_close"   c'LZ_compress_close :: Ptr LzEncoder -> IO CInt
 -- NB: we ignore the retval to match the type-sig of 'newForeignPtr'
-foreign import capi "hs_lzlib.h &LZ_compress_close" cp'LZ_compress_close :: FunPtr (Ptr LzEncoder -> IO ())
+foreign import capi "hs_lzlib.h hs_lzlib_compress_close_addr" cp'LZ_compress_close :: FunPtr (Ptr LzEncoder -> IO ())
 
 
 foreign import capi "hs_lzlib.h LZ_compress_finish"         c'LZ_compress_finish         :: Ptr LzEncoder -> IO CInt
@@ -147,8 +155,7 @@ foreign import capi unsafe "hs_lzlib.h LZ_compress_total_out_size"   c'LZ_compre
 foreign import capi "hs_lzlib.h LZ_decompress_open"    c'LZ_decompress_open  :: IO (Ptr LzDecoder)
 foreign import capi "hs_lzlib.h LZ_decompress_close"   c'LZ_decompress_close :: Ptr LzDecoder -> IO CInt
 -- NB: we ignore the retval to match the type-sig of 'newForeignPtr'
-foreign import capi "hs_lzlib.h &LZ_decompress_close" cp'LZ_decompress_close :: FunPtr (Ptr LzDecoder -> IO ())
-
+foreign import capi "hs_lzlib.h hs_lzlib_decompress_close_addr" cp'LZ_decompress_close :: FunPtr (Ptr LzDecoder -> IO ())
 
 foreign import capi "hs_lzlib.h LZ_decompress_finish"         c'LZ_decompress_finish         :: Ptr LzDecoder -> IO CInt
 foreign import capi "hs_lzlib.h LZ_decompress_reset"          c'LZ_decompress_reset          :: Ptr LzDecoder -> IO CInt

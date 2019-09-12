@@ -16,9 +16,9 @@ category:            Codec, Compression
 description:
   Lzip is a data compression format based on <https://en.wikipedia.org/wiki/LZMA LZMA (Lempel–Ziv–Markov chain algorithm)>.
   .
-  The <https://www.nongnu.org/lzip/manual/lzlib_manual.html#Data-format Lzip file format> is designed for data sharing and long-term archiving, taking into account both data integrity and decoder availability (see the <https://www.nongnu.org/lzip/lzlib.html Lzlib homepage for more details).
+  The <https://www.nongnu.org/lzip/manual/lzlib_manual.html#Data-format Lzip file format> is designed for data sharing and long-term archiving, taking into account both data integrity and decoder availability (see the <https://www.nongnu.org/lzip/lzlib.html Lzlib homepage> for more details).
   .
-  This package provides low-level FFI bindings to the Lzlib C library as well as a mid-level API based
+  This package provides low-level FFI bindings to the Lzlib C library as well as a monadic 'ByteString'-based mid-level API for the 'IO' and 'ST' monads.
 
 extra-source-files:
   cbits/hs_lzlib.h

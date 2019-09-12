@@ -48,6 +48,7 @@ flag int-cast
 flag use-system-lzlib
   manual: True
   default: False
+  description: Whether to use system-provided @lzlib@ C library; if this flag is set to false, an embedded vendored copy of @lzlib-0.11@ will be compiled and linked
 
 library
   hs-source-dirs:      src
